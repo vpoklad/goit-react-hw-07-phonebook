@@ -1,7 +1,8 @@
 import ContactItem from './ContactItem';
 import s from './ContactList.module.css';
-import { useGetContactsQuery } from '../../services/mockAPI';
+import { useGetContactsQuery } from '../../services/phoneBookAPI';
 import { useSelector } from 'react-redux';
+import Loader from '../Loader/Loader';
 
 export default function ContactList() {
   const filter = useSelector(state => state.filter);
@@ -10,7 +11,7 @@ export default function ContactList() {
 
   return (
     <>
-      {isFetching && <p>Fetching...</p>}
+      {isFetching && <Loader />}
       <h2 className={s.title}>Contacts</h2>
       {data && !isFetching && (
         <ul>

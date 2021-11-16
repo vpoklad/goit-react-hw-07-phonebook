@@ -5,7 +5,7 @@ import { filterReducer } from './reducer';
 // import { createStore } from 'redux';
 // import { composeWithDevTools } from 'redux-devtools-extension';
 
-import { phoneBookApi } from '../services/mockAPI';
+import { phoneBookApi } from '../services/phoneBookAPI';
 
 export const store = configureStore({
   reducer: {

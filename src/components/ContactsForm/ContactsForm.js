@@ -4,9 +4,9 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import s from './ContactsForm.module.css';
 import { addContact } from '../../redux/actions';
-import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
 
+import { useForm } from 'react-hook-form';
+import { useAddContactMutation } from '../../services/phoneBookAPI';
 export default function ContactsForm() {
   const {
     register,
@@ -14,10 +14,10 @@ export default function ContactsForm() {
     reset,
     formState: { errors },
   } = useForm();
-  const dispatch = useDispatch();
 
+  const [addContact] = useAddContactMutation();
   const onSubmit = data => {
-    dispatch(addContact({ ...data, id: uuid() }));
+    addContact(data);
     reset();
   };
 
@@ -43,10 +43,10 @@ export default function ContactsForm() {
       </label>
 
       <label className={s.label}>
-        Number
+        Phone
         <input
           type="tel"
-          {...register('number', {
+          {...register('phone', {
             required: true,
             pattern:
               /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
