@@ -1,12 +1,13 @@
-import { v4 as uuid } from 'uuid';
-// import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import s from './ContactsForm.module.css';
-import { addContact } from '../../redux/actions';
 
 import { useForm } from 'react-hook-form';
-import { useAddContactMutation } from '../../services/phoneBookAPI';
+import {
+  useAddContactMutation,
+  useGetContactsQuery,
+} from '../../services/phoneBookAPI';
+
 export default function ContactsForm() {
   const {
     register,
@@ -15,10 +16,20 @@ export default function ContactsForm() {
     formState: { errors },
   } = useForm();
 
+  const { data: contacts } = useGetContactsQuery();
   const [addContact] = useAddContactMutation();
+
   const onSubmit = data => {
-    addContact(data);
-    reset();
+    const existContact = contacts.some(
+      el => el.name.toLowerCase() === data.name.toLowerCase(),
+    );
+    if (existContact) {
+      alert(`this contact already exists`);
+      return;
+    } else {
+      addContact(data);
+      reset();
+    }
   };
 
   return (
@@ -71,12 +82,3 @@ export default function ContactsForm() {
     </form>
   );
 }
-
-// const mapToDispatchProps = dispatch => ({
-//   addNewContact: contact => dispatch(addContact(contact)),
-// });
-// export default connect(null, mapToDispatchProps)(ContactsForm);
-
-// ContactsForm.propTypes = {
-//   addNewContact: PropTypes.func.isRequired,
-// };

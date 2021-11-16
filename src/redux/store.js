@@ -1,10 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { filterReducer } from './reducer';
-// import { setFilter } from './actions';
-// import { createStore } from 'redux';
-// import { composeWithDevTools } from 'redux-devtools-extension';
 
+import { filterReducer } from './reducer';
 import { phoneBookApi } from '../services/phoneBookAPI';
 
 export const store = configureStore({
@@ -15,4 +11,3 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(phoneBookApi.middleware),
 });
-setupListeners(store.dispatch);
