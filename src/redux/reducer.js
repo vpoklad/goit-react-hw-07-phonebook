@@ -1,5 +1,5 @@
 // import { types } from '../redux/types';
-import { combineReducers } from 'redux';
+
 import { createReducer } from '@reduxjs/toolkit';
 import { addContact, deleteContact, setFilter } from './actions';
 
@@ -26,15 +26,9 @@ const contactReducer = createReducer(initialContacts, {
     state.filter(contact => contact.id !== payload),
 });
 
-const filterReducer = createReducer('', {
+export const filterReducer = createReducer('', {
   [setFilter]: (state, { payload }) => (state = payload),
 });
-
-const rootReducer = combineReducers({
-  contacts: contactReducer,
-  filter: filterReducer,
-});
-export default rootReducer;
 
 // const contactReducer = (state = initialContacts, { type, payload }) => {
 //   switch (type) {

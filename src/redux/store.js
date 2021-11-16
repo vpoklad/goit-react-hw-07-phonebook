@@ -1,40 +1,18 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { filterReducer } from './reducer';
+// import { setFilter } from './actions';
 // import { createStore } from 'redux';
 // import { composeWithDevTools } from 'redux-devtools-extension';
-import rootReducer from './reducer';
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 
-const persistConfig = {
-  key: 'сontacts',
-  storage,
-  blacklist: ['filter'],
-};
+import { phoneBookApi } from '../services/mockAPI';
 
-// const middleware = [ ...getDefaultMiddleware({serializableCheck: {
-//     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-//   }})
-
-// ]
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
+  reducer: {
+    [phoneBookApi.reducerPath]: phoneBookApi.reducer,
+    filter: filterReducer,
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(phoneBookApi.middleware),
 });
-export const persistor = persistStore(store);
-
-// export const store = createStore(rootReducer, composeWithDevTools());
+setupListeners(store.dispatch);
